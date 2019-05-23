@@ -31,13 +31,11 @@ double Circuit::calcResistance() {
 	return calcTotalResistance(junctions.at(0));
 }
 
-double Circuit::calcTotalResistance(Junction* rootJunction) {
+double Circuit::calcTotalResistance(Junction* relativeRoot) {
 
-	vector<Wire*> forwardConnections = rootJunction->getForwardConnections();
+	vector<Wire*> forwardConnections = relativeRoot->getForwardConnections();
 	int nForwardConnections = forwardConnections.size();
-
-
-
+	
 	//check # of possible traversals from current node and act accordingly
 		//if only 1 --> add resistance and continue on
 		//if > 1 --> calc parallel resistance and continue on
@@ -54,7 +52,7 @@ double Circuit::calcTotalResistance(Junction* rootJunction) {
 		}
 	}
 	else {
-		CollisionResult cr = calcEqResistance(rootJunction);
+		CollisionResult cr = calcEqResistance(relativeRoot);
 		return cr.resistance + calcTotalResistance(cr.collisionNode);
 	}
 }
